@@ -6,6 +6,9 @@
 // @version     0.1
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
+// @note        
+// @note        REQUIREMENTS / IMPORT MODULS
+// @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
 // ==/UserScript==
 
 //######################################################
@@ -141,28 +144,52 @@ if (isExtensionsPage()) {
 //######################################################
 //################ ADD NEW PATHS #######################
 //######################################################
-var carouselItemMain = document.getElementById('carousel-item-main');
 
-var divider = document.createElement('div');
-divider.className = 'dropdown-divider';
+// String containing the name of the current Moodle theme
+const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
+var dropdownID;
 
-carouselItemMain.appendChild(divider);
+// Switch statement to handle different themes
+switch (MoodleTheme) {
+    case "classic":
+        dropdownID = "action-menu-0-menu";
+        break;
+    case "boost":
+        dropdownID = "carousel-item-main";
+        break;
+    default:
+        dropdownID = "carousel-item-main";
+        break;
+}
 
-var newAnchor1 = document.createElement('a');
-newAnchor1.href = 'https://moodle.bbbaden.ch/userscript/config';
-newAnchor1.className = 'dropdown-item';
-newAnchor1.setAttribute('role', 'menuitem');
-newAnchor1.setAttribute('tabindex', '-1');
-newAnchor1.textContent = 'Userscript Config';
+var dropdown = document.getElementById(dropdownID);
 
-carouselItemMain.appendChild(newAnchor1);
 
-var newAnchor2 = document.createElement('a');
-newAnchor2.href = 'https://moodle.bbbaden.ch/userscript/extensions';
-newAnchor2.className = 'dropdown-item';
-newAnchor2.setAttribute('role', 'menuitem');
-newAnchor2.setAttribute('tabindex', '-1');
-newAnchor2.textContent = 'Manage Userscripts';
+function addElementToDropdown(dropdown, url, name) {
+    // Create the new anchor element
+    var newAnchor = document.createElement('a');
 
-// Append the second anchor element to the div
-carouselItemMain.appendChild(newAnchor2);
+    newAnchor.href = url;
+    newAnchor.className = 'dropdown-item';
+    newAnchor.setAttribute('role', 'menuitem');
+    newAnchor.setAttribute('tabindex', '-1');
+    newAnchor.textContent = name;
+
+    // Append the anchor element to the div
+    dropdown.appendChild(newAnchor);
+}
+
+function addDeviderToDropdown(dropdown) {
+    // Create the new anchor element
+    var newDivider = document.createElement('div');
+
+    newDivider.className = 'dropdown-divider';
+
+    // Append the anchor element to the div
+    dropdown.appendChild(newDivider);
+}
+
+addDeviderToDropdown(dropdown);
+addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/config', 'Userscript Config');
+addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/extensions', 'Manage Userscripts');
+
