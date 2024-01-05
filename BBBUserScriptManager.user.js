@@ -11,17 +11,33 @@
 // @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
 // ==/UserScript==
 
-//######################################################
-//############# CHECK FOR CONFIG PAGE ##################
-//######################################################
-function isConfigPage() {
-    return window.location.href === 'https://moodle.bbbaden.ch/userscript/config';
+function addElementToDropdown(dropdown, url, name) {
+    // Create the new anchor element
+    var newAnchor = document.createElement('a');
+
+    newAnchor.href = url;
+    newAnchor.className = 'dropdown-item';
+    newAnchor.setAttribute('role', 'menuitem');
+    newAnchor.setAttribute('tabindex', '-1');
+    newAnchor.textContent = name;
+
+    // Append the anchor element to the div
+    dropdown.appendChild(newAnchor);
 }
 
-if (isConfigPage()) {
+function addDeviderToDropdown(dropdown) {
+    // Create the new anchor element
+    var newDivider = document.createElement('div');
 
+    newDivider.className = 'dropdown-divider';
+
+    // Append the anchor element to the div
+    dropdown.appendChild(newDivider);
+}
+
+function addPage (title, name, html) {
     // HEAD SECTION
-    document.title = 'Userscript Config';
+    document.title = title;
 
     // HEADER SECTION
     var pageHeader = document.getElementById('page-header');
@@ -29,33 +45,15 @@ if (isConfigPage()) {
     if (pageHeader) {
         var errorHeading = pageHeader.querySelector('h1.h2');
         if (errorHeading) {
-            errorHeading.innerHTML = 'Moodle Userscript Config';
+            errorHeading.innerHTML = name;
         }
-
     }
 
     // PAGE CONTENT SECTION
     var pageContent = document.getElementById('page-content');
     if (pageContent) {
-        pageContent.innerHTML = `
-            <div id="region-main" class="header-maxwidth" aria-label="Inhalt">
-                <div class="nav-tabs h2" id="line"></div>
-                <h2>Abschnitt 1</h2>
-                <p>Bla Bla Bla</p>
-                <button class="btn btn-outline-secondary btn-sm text-nowrap h2">hi</button>
-                <button class="btn btn-outline-secondary btn-sm text-nowrap h2">hi</button>
-                <div class="nav-tabs h2" id="line"></div>
-                <h2>Abschnitt 2</h2>
-                <p>Bla Bla Bla</p>
-            </div>
-        `;
+        pageContent.innerHTML = html;
     }
-}
-//######################################################
-//########### CHECK FOR EXTENSIONS PAGE ################
-//######################################################
-function isExtensionsPage() {
-    return window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions';
 }
 
 function appendTableToHTML() {
@@ -111,10 +109,12 @@ function appendTableToHTML() {
 
 
 
+//############# CHECK FOR CONFIG PAGE ##################
 
-if (isExtensionsPage()) {
+if (window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
+
     // HEAD SECTION
-    document.title = 'Manage Userscripts';
+    document.title = 'Userscript Config';
 
     // HEADER SECTION
     var pageHeader = document.getElementById('page-header');
@@ -122,8 +122,9 @@ if (isExtensionsPage()) {
     if (pageHeader) {
         var errorHeading = pageHeader.querySelector('h1.h2');
         if (errorHeading) {
-            errorHeading.innerHTML = 'Manage Userscripts';
+            errorHeading.innerHTML = 'Moodle Userscript Config';
         }
+
     }
 
     // PAGE CONTENT SECTION
@@ -132,18 +133,65 @@ if (isExtensionsPage()) {
         pageContent.innerHTML = `
             <div id="region-main" class="header-maxwidth" aria-label="Inhalt">
                 <div class="nav-tabs h2" id="line"></div>
-                <div id="tableOfContent"></div>
+                <h2>Abschnitt 1</h2>
+                <p>Bla Bla Bla</p>
+                <button class="btn btn-outline-secondary btn-sm text-nowrap h2">hi</button>
+                <button class="btn btn-outline-secondary btn-sm text-nowrap h2">hi</button>
+                <div class="nav-tabs h2" id="line"></div>
+                <h2>Abschnitt 2</h2>
+                <p>Bla Bla Bla</p>
             </div>
         `;
-
-        // Append the table to HTML
-        appendTableToHTML();
     }
 }
 
-//######################################################
-//################ ADD NEW PATHS #######################
-//######################################################
+
+//########### CHECK FOR EXTENSIONS PAGE ################
+
+if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions') {
+    var title = 'Manage Userscripts';
+    var name = 'Manage Userscripts';
+    var html = `
+        <div id="region-main" class="header-maxwidth" aria-label="Inhalt">
+            <div class="nav-tabs h2" id="line"></div>
+            <div id="tableOfContent"></div>
+        </div>
+    `;
+    addPage(title, name, html);
+    appendTableToHTML();
+
+    /* OLD DROPDOWN CODE
+        // HEAD SECTION
+        document.title = 'Manage Userscripts';
+
+        // HEADER SECTION
+        var pageHeader = document.getElementById('page-header');
+
+        if (pageHeader) {
+            var errorHeading = pageHeader.querySelector('h1.h2');
+            if (errorHeading) {
+                errorHeading.innerHTML = 'Manage Userscripts';
+            }
+        }
+
+        // PAGE CONTENT SECTION
+        var pageContent = document.getElementById('page-content');
+        if (pageContent) {
+            pageContent.innerHTML = `
+                <div id="region-main" class="header-maxwidth" aria-label="Inhalt">
+                    <div class="nav-tabs h2" id="line"></div>
+                    <div id="tableOfContent"></div>
+                </div>
+            `;
+
+            // Append the table to HTML
+            appendTableToHTML();
+        }
+    */
+}
+
+
+// ####################### Dropdown #######################
 
 // String containing the name of the current Moodle theme
 const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
@@ -163,31 +211,6 @@ switch (MoodleTheme) {
 }
 
 var dropdown = document.getElementById(dropdownID);
-
-
-function addElementToDropdown(dropdown, url, name) {
-    // Create the new anchor element
-    var newAnchor = document.createElement('a');
-
-    newAnchor.href = url;
-    newAnchor.className = 'dropdown-item';
-    newAnchor.setAttribute('role', 'menuitem');
-    newAnchor.setAttribute('tabindex', '-1');
-    newAnchor.textContent = name;
-
-    // Append the anchor element to the div
-    dropdown.appendChild(newAnchor);
-}
-
-function addDeviderToDropdown(dropdown) {
-    // Create the new anchor element
-    var newDivider = document.createElement('div');
-
-    newDivider.className = 'dropdown-divider';
-
-    // Append the anchor element to the div
-    dropdown.appendChild(newDivider);
-}
 
 addDeviderToDropdown(dropdown);
 addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/config', 'Userscript Config');
