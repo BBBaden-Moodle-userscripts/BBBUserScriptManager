@@ -1,7 +1,3 @@
-Certainly! Below is a README.md file for your BBB UserScript Manager project:
-
----
-
 # BBB UserScript Manager
 
 ## Overview
@@ -50,7 +46,3 @@ The script is authored by **PianoNic** and is intended to provide a seamless exp
 ## Author
 
 - **PianoNic** - [GitHub Profile](https://github.com/PianoNic)
-
----
-
-Feel free to modify the README as needed or add more sections based on additional features or details you want to include.
