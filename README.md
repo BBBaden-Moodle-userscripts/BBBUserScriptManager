@@ -15,7 +15,7 @@ The BBB UserScript Manager is a UserScript designed to enhance the functionality
 To install the BBB UserScript Manager:
 
 1. Ensure you have a UserScript manager extension installed, such as [Violentmonkey](https://violentmonkey.github.io/#installation).
-2. Visit the [BBB UserScript Manager script link](#) to install the script.
+2. Click [BBB UserScript Manager](https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js) to install the script.
 
 ## Compatibility
 
