@@ -18,16 +18,6 @@
 if (window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
 
     PageBuilder.preparePage('Userscript Config', 'Userscript Config');
-
-    PageBuilder.addH1('H1 Test');
-
-    PageBuilder.addLine();
-
-    PageBuilder.addH2('H2 Test');
-
-    PageBuilder.addLine();
-
-    PageBuilder.addButton("Button Test");
 }
 
 
