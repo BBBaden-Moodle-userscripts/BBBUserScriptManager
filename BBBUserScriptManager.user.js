@@ -2,6 +2,7 @@
 // @name        BBB UserScript Manager
 // @namespace   Violentmonkey Scripts
 // @match       https://moodle.bbbaden.ch/*
+// @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       none
 // @version     0.2
 // @author      PianoNic
