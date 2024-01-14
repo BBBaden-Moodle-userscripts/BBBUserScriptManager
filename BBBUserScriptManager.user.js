@@ -13,6 +13,12 @@
 // @require     https://github.com/BBBaden-Moodle-userscripts/404PageBuilder/raw/main/404PageBuilder.lib.user.js
 // ==/UserScript==
 
+//########### ADD LINK TO MOODLE SIDEBAR ###############
+
+var ul = document.querySelector('.no-overflow ul');
+if (ul) ul.innerHTML += '<li><a href="https://moodle.bbbaden.ch/userscript/extensions">UserScript Manager</a></li>';
+
+
 //############# CHECK FOR CONFIG PAGE ##################
 
 if (window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
