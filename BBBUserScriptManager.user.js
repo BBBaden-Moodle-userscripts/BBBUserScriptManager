@@ -7,6 +7,8 @@
 // @version     0.2
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
+// @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
+// @updateURL   https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
 // @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
