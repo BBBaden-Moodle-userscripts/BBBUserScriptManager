@@ -26,7 +26,7 @@ To install the BBB UserScript Manager:
 
 ### Extensions Page
 
-- Visit `https://moodle.bbbaden.ch/userscript/extensions` to manage userscripts.
+- Visit `https://moodle.bbbaden.ch/userscript/extensions` to view all userscripts.
 - Users can install various userscripts from this page.
 
 ### Configuration Page
