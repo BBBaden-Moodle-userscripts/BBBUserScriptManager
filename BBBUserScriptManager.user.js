@@ -4,14 +4,13 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       none
-// @version     0.2.1
+// @version     0.2.2
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
 // @updateURL   https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
-// @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
 // @require     https://github.com/BBBaden-Moodle-userscripts/404PageBuilder/raw/main/404PageBuilder.lib.user.js
 // ==/UserScript==
 
@@ -74,6 +73,9 @@ dropdownID = "carousel-item-main";
 /*
  
  The following code is not required anymore, since they removed the classic theme.
+
+ add this to the userscript header (if used again):
+ // @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
  
 // Switch statement to handle different themes
 switch (MoodleTheme) {
