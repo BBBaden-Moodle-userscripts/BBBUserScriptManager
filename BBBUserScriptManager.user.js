@@ -4,7 +4,7 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       none
-// @version     0.2
+// @version     0.2.1
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -70,6 +70,11 @@ function addDeviderToDropdown(dropdown) {
 const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
 var dropdownID;
 
+dropdownID = "carousel-item-main";
+/*
+ 
+ The following code is not required anymore, since they removed the classic theme.
+ 
 // Switch statement to handle different themes
 switch (MoodleTheme) {
     case "classic":
@@ -82,6 +87,7 @@ switch (MoodleTheme) {
         dropdownID = "carousel-item-main";
         break;
 }
+*/
 
 var dropdown = document.getElementById(dropdownID);
 
