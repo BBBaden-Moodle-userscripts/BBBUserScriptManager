@@ -12,6 +12,7 @@
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
 // @require     https://github.com/BBBaden-Moodle-userscripts/404PageBuilder/raw/main/404PageBuilder.lib.user.js
+// @require     https://github.com/black-backdoor/DataBridge/raw/main/DataBridge.lib.user.js
 // ==/UserScript==
 
 //########### ADD LINK TO MOODLE SIDEBAR ###############
@@ -97,3 +98,40 @@ addDeviderToDropdown(dropdown);
 addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/config', 'Userscript Config');
 addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/extensions', 'Manage Userscripts');
 
+
+
+//####################### DataBridge #######################
+// Create a new DataBridge
+const UserScriptCon = new Connection("BBBUserScriptManager");
+
+// Register an event listener for the extensionInstalled event
+Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
+    var scriptInstalled = msg.body?.script?.scriptName;
+    var scriptVersion = msg.body?.script?.scriptVersion;
+
+    console.log('Extension installed: ' + scriptInstalled);
+    console.log('Version: ' + scriptVersion);
+    
+    // add logic to display the installed extensions
+    /*
+    return {
+        "scriptName": scriptname,
+        "scriptVersion": scriptVersion
+    };
+    */
+});
+
+
+function getInstalledExtensions() {
+    // Send a message to the installed extensions
+    UserScriptCon.send({
+        header: {
+            receiver: "*",
+            protocolVersion: "1.0",
+            messageType: "getInstalled",
+        },
+        body: "",
+    });
+}
+
+setTimeout(getInstalledExtensions, 1000);
