@@ -4,7 +4,7 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       none
-// @version     0.2.2
+// @version     0.2.3
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -66,7 +66,7 @@ function addDeviderToDropdown(dropdown) {
 }
 
 // String containing the name of the current Moodle theme
-const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
+//const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
 var dropdownID;
 
 dropdownID = "carousel-item-main";
