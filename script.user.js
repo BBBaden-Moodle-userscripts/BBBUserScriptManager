@@ -7,8 +7,6 @@
 // @version     0.2.3
 // @author      PianoNic
 // @description the part of the script that should be added to the userscripts
-// @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
-// @updateURL   https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
 // @require     https://github.com/BBBaden-Moodle-userscripts/404PageBuilder/raw/main/404PageBuilder.lib.user.js
