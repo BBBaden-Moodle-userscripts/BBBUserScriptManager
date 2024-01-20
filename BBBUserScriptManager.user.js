@@ -4,7 +4,7 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       none
-// @version     0.2.3
+// @version     0.3.0
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -103,35 +103,36 @@ addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/extensions'
 //####################### DataBridge #######################
 // Create a new DataBridge
 const UserScriptCon = new Connection("BBBUserScriptManager");
+if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' || window.location.href === 'https://moodle.bbbaden.ch/userscript/config') { 
+    // Register an event listener for the extensionInstalled event
+    Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
+        var scriptInstalled = msg.body?.script?.scriptName;
+        var scriptVersion = msg.body?.script?.scriptVersion;
 
-// Register an event listener for the extensionInstalled event
-Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
-    var scriptInstalled = msg.body?.script?.scriptName;
-    var scriptVersion = msg.body?.script?.scriptVersion;
-
-    console.log('Extension installed: ' + scriptInstalled);
-    console.log('Version: ' + scriptVersion);
-    
-    // add logic to display the installed extensions
-    /*
-    return {
-        "scriptName": scriptname,
-        "scriptVersion": scriptVersion
-    };
-    */
-});
-
-
-function getInstalledExtensions() {
-    // Send a message to the installed extensions
-    UserScriptCon.send({
-        header: {
-            receiver: "*",
-            protocolVersion: "1.0",
-            messageType: "getInstalled",
-        },
-        body: "",
+        console.log('Extension installed: ' + scriptInstalled);
+        console.log('Version: ' + scriptVersion);
+        
+        // add logic to display the installed extensions
+        /*
+        return {
+            "scriptName": scriptname,
+            "scriptVersion": scriptVersion
+        };
+        */
     });
-}
 
-setTimeout(getInstalledExtensions, 1000);
+
+    function getInstalledExtensions() {
+        // Send a message to the installed extensions
+        UserScriptCon.send({
+            header: {
+                receiver: "*",
+                protocolVersion: "1.0",
+                messageType: "getInstalled",
+            },
+            body: "",
+        });
+    }
+
+    setTimeout(getInstalledExtensions, 1000);
+}
