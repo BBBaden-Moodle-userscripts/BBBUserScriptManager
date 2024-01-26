@@ -4,7 +4,7 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       GM_info
-// @version     0.4
+// @version     0.4.1
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -109,8 +109,7 @@ if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' |
         var scriptInstalled = msg.body?.script?.scriptName;
         var scriptVersion = msg.body?.script?.scriptVersion;
 
-        console.log('Extension installed: ' + scriptInstalled);
-        console.log('Version: ' + scriptVersion);
+        console.log(`detected installed script: ${scriptInstalled} v${scriptVersion}`);
 
         // Call the updateInstallationStatus function from your library
         PageBuilder.updateInstallationStatus(scriptInstalled, scriptVersion);
