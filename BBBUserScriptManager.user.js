@@ -3,8 +3,8 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
-// @grant       none
-// @version     0.3.0
+// @grant       GM_info
+// @version     0.4
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -72,12 +72,12 @@ var dropdownID;
 
 dropdownID = "carousel-item-main";
 /*
- 
+
  The following code is not required anymore, since they removed the classic theme.
 
  add this to the userscript header (if used again):
  // @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
- 
+
 // Switch statement to handle different themes
 switch (MoodleTheme) {
     case "classic":
@@ -103,7 +103,7 @@ addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/extensions'
 //####################### DataBridge #######################
 // Create a new DataBridge
 const UserScriptCon = new Connection("BBBUserScriptManager");
-if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' || window.location.href === 'https://moodle.bbbaden.ch/userscript/config') { 
+if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' || window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
     // Register an event listener for the extensionInstalled event
     Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
         var scriptInstalled = msg.body?.script?.scriptName;
@@ -111,14 +111,9 @@ if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' |
 
         console.log('Extension installed: ' + scriptInstalled);
         console.log('Version: ' + scriptVersion);
-        
-        // add logic to display the installed extensions
-        /*
-        return {
-            "scriptName": scriptname,
-            "scriptVersion": scriptVersion
-        };
-        */
+
+        // Call the updateInstallationStatus function from your library
+        PageBuilder.updateInstallationStatus(scriptInstalled, scriptVersion);
     });
 
 
