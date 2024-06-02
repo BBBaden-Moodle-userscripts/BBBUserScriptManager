@@ -4,7 +4,7 @@
 // @match       https://moodle.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       GM_info
-// @version     0.4.1
+// @version     0.5.0
 // @author      PianoNic
 // @description 5.1.2024, 09:19:31
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
