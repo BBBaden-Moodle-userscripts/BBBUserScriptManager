@@ -35,8 +35,66 @@ if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions') 
 
     PageBuilder.preparePage('Manage Userscripts', 'Manage Userscripts');
 
-    PageBuilder.addExtensionInstallationTable();
+    function addExtensionInstallationTable() {
+    // Fetch repo data from GitHub API
+    fetch('https://api.github.com/users/BBBaden-Moodle-userscripts/repos')
+        .then(response => response.json())
+        .then(data => {
+            const repos = data.map(repo => fetch(repo.contents_url.replace('{+path}', '')))
+            return Promise.all(repos);
+        })
+        .then(responses => Promise.all(responses.map(res => res.json())))
+        .then(contents => {
+            // Filter and map the repositories based on the presence of .user.js files
+            const filteredRepos = contents.filter(files => {
+                const hasUserJs = files.some(file => file.name.endsWith('.user.js'));
+                const hasLibUserJs = files.some(file => file.name.endsWith('.lib.user.js'));
+                return hasUserJs && !hasLibUserJs;
+            }).map(files => {
+                const repo = files[0].repository;
+                const userJsFile = files.find(file => file.name.endsWith('.user.js'));
+                return {
+                    name: repo.name,
+                    html_url: repo.html_url,
+                    language: repo.language,
+                    raw_url: userJsFile ? userJsFile.download_url : null
+                };
+            });
 
+            // Create a table element
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = '<th>Repository Name</th><th>Language</th><th>Installed Status</th><th>Action</th>';
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create table body
+            const tbody = document.createElement('tbody');
+            filteredRepos.forEach(repo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><a href="${repo.html_url}" target="_blank">${repo.name}</a></td>
+                    <td>${repo.language || 'N/A'}</td>
+                    <td>Not Installed</td>
+                    <td><a href="${repo.raw_url}" target="_blank">Install</a></td>`;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+
+            // Append the table to the specified div
+            const pageContent = document.getElementsByClassName('custom-content')[0];
+            pageContent.appendChild(table);
+        })
+        .catch(error => {
+            console.error('Error fetching or appending table:', error);
+        });
+    }
+    addExtensionInstallationTable();
 }
 
 
