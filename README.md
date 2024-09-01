@@ -21,7 +21,7 @@ To install the BBB UserScript Manager:
 
 ## Compatibility
 
-- **Platform**: Moodle on BBBaden (https://moodle.bbbaden.ch/) 🏫
+- **Platform**: Moodle on BBBaden https://moodle.bbbaden.ch 🏫
 - **UserScript Manager**: Compatible with Violentmonkey and other similar extensions. 🌐
 
 ## Usage
