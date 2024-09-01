@@ -12,7 +12,7 @@
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
 // @require     https://github.com/BBBaden-Moodle-userscripts/PageBuilderLib/raw/main/PageBuilder.lib.user.js
-// @require     https://github.com/black-backdoor/DataBridge/raw/main/DataBridge.lib.user.js
+// @require     https://github.com/BBBaden-Moodle-userscripts/UserscriptBridgeLib/raw/main/userscriptBridge.lib.js
 // ==/UserScript==
 
 //########### ADD LINK TO MOODLE SIDEBAR ###############
@@ -55,7 +55,7 @@ function addElementToDropdown(dropdown, url, name) {
     dropdown.appendChild(newAnchor);
 }
 
-function addDeviderToDropdown(dropdown) {
+function addDividerToDropdown(dropdown) {
     // Create the new anchor element
     var newDivider = document.createElement('div');
 
@@ -65,67 +65,44 @@ function addDeviderToDropdown(dropdown) {
     dropdown.appendChild(newDivider);
 }
 
-// String containing the name of the current Moodle theme
-//const MoodleTheme = MoodleThemeDetector.detectTheme(document.head);
-var dropdownID;
+var dropdown = document.getElementById("carousel-item-main");
 
-dropdownID = "carousel-item-main";
-/*
-
- The following code is not required anymore, since they removed the classic theme.
-
- add this to the userscript header (if used again):
- // @require     https://github.com/BBBaden-Moodle-userscripts/MoodleThemeDetector/raw/main/MoodleThemeDetector.lib.user.js
-
-// Switch statement to handle different themes
-switch (MoodleTheme) {
-    case "classic":
-        dropdownID = "action-menu-0-menu";
-        break;
-    case "boost":
-        dropdownID = "carousel-item-main";
-        break;
-    default:
-        dropdownID = "carousel-item-main";
-        break;
-}
-*/
-
-var dropdown = document.getElementById(dropdownID);
-
-addDeviderToDropdown(dropdown);
+addDividerToDropdown(dropdown);
 addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/config', 'Userscript Config');
 addElementToDropdown(dropdown, 'https://moodle.bbbaden.ch/userscript/extensions', 'Manage Userscripts');
 
-
-
 //####################### DataBridge #######################
+const connection = new Manager();
+
+connection.fetchInstalledUserscripts().then((userscripts) => {
+    console.log('Installed Userscripts:', userscripts);
+});
 // Create a new DataBridge
-const UserScriptCon = new Connection("BBBUserScriptManager");
-if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' || window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
-    // Register an event listener for the extensionInstalled event
-    Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
-        var scriptInstalled = msg.body?.script?.scriptName;
-        var scriptVersion = msg.body?.script?.scriptVersion;
+// const UserScriptCon = new Connection("BBBUserScriptManager");
+// if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions' || window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
+//     // Register an event listener for the extensionInstalled event
+//     Protocol.registerMessageType(UserScriptCon, 'extensionInstalled', function (msg) {
+//         var scriptInstalled = msg.body?.script?.scriptName;
+//         var scriptVersion = msg.body?.script?.scriptVersion;
 
-        console.log(`detected installed script: ${scriptInstalled} v${scriptVersion}`);
+//         console.log(`detected installed script: ${scriptInstalled} v${scriptVersion}`);
 
-        // Call the updateInstallationStatus function from your library
-        PageBuilder.updateInstallationStatus(scriptInstalled, scriptVersion);
-    });
+//         // Call the updateInstallationStatus function from your library
+//         PageBuilder.updateInstallationStatus(scriptInstalled, scriptVersion);
+//     });
 
 
-    function getInstalledExtensions() {
-        // Send a message to the installed extensions
-        UserScriptCon.send({
-            header: {
-                receiver: "*",
-                protocolVersion: "1.0",
-                messageType: "getInstalled",
-            },
-            body: "",
-        });
-    }
+//     function getInstalledExtensions() {
+//         // Send a message to the installed extensions
+//         UserScriptCon.send({
+//             header: {
+//                 receiver: "*",
+//                 protocolVersion: "1.0",
+//                 messageType: "getInstalled",
+//             },
+//             body: "",
+//         });
+//     }
 
-    setTimeout(getInstalledExtensions, 1000);
-}
+//     setTimeout(getInstalledExtensions, 1000);
+// }
