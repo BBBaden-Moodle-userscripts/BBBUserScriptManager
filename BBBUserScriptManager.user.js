@@ -11,7 +11,7 @@
 // @updateURL   https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
 // @note
 // @note        REQUIREMENTS / IMPORT MODULS
-// @require     https://github.com/BBBaden-Moodle-userscripts/404PageBuilder/raw/main/404PageBuilder.lib.user.js
+// @require     https://github.com/BBBaden-Moodle-userscripts/PageBuilderLib/raw/main/PageBuilder.lib.user.js
 // @require     https://github.com/black-backdoor/DataBridge/raw/main/DataBridge.lib.user.js
 // ==/UserScript==
 
@@ -38,7 +38,6 @@ if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions') 
     PageBuilder.addExtensionInstallationTable();
 
 }
-
 
 //####################### Dropdown #######################
 
