@@ -6,7 +6,7 @@ The BBB UserScript Manager is a UserScript designed to enhance the functionality
 
 ## Features
 
-- **Dropdown Menu** 🔽: Adds a dropdown menu to the Moodle interface, enabling users to access configuration and management options conveniently.
+- **Dropdown Menu** 🔽: Modifies the dropdown menu on the Moodle interface, enabling users to access configuration and management options conveniently.
 - **Manage Userscripts** 🛠️: Provides a dedicated page for managing userscripts, allowing users to install, configure, or manage various scripts.
 - **Theme Detection** 🎨: Detects the Moodle theme to adjust the interface accordingly for a consistent user experience.
 
