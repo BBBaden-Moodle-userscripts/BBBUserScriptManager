@@ -25,7 +25,7 @@ if (ul) ul.innerHTML += '<li><a href="https://moodle.bbbaden.ch/userscript/exten
 
 if (window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
 
-    PageBuilder.preparePage('Userscript Config', 'Userscript Config');
+    PageBuilder.prepare404Page('Userscript Config', 'Userscript Config');
 }
 
 
@@ -33,7 +33,7 @@ if (window.location.href === 'https://moodle.bbbaden.ch/userscript/config') {
 
 if (window.location.href === 'https://moodle.bbbaden.ch/userscript/extensions') {
 
-    PageBuilder.preparePage('Manage Userscripts', 'Manage Userscripts');
+    PageBuilder.prepare404Page('Manage Userscripts', 'Manage Userscripts');
 
     PageBuilder.addExtensionInstallationTable();
 
