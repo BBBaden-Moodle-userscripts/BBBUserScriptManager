@@ -20,6 +20,9 @@
 
     Logger.info('manager', 'v0.7.0 - Enhanced');
 
+    const connection = new Script();
+    Logger.success('manager', 'Bridge connection initialized');
+    
     PageBuilder.prepare404Page = (title, text) => {
         document.title = title;
         const h = document.querySelector('#page-header h1.h2');
