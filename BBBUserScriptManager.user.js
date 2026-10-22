@@ -5,7 +5,7 @@
 // @match       https://lms.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       GM_info
-// @version     0.8.1
+// @version     0.9.0
 // @author      PianoNic
 // @description BBB UserScript Manager - Enhanced with better script detection
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -20,7 +20,7 @@
     'use strict';
 
     if (!UserscriptBridge.runOnce()) return;
-    Logger.info('manager', 'v0.8.1');
+    Logger.info('manager', 'v0.9.0');
 
     const CONFIG_PATH = '/userscript/config';
     const EXTENSIONS_PATH = UserscriptBridge.EXTENSIONS_PATH;
@@ -55,6 +55,42 @@
         return variations.some(v => 
             normalizedTable.includes(v) || v.includes(normalizedTable)
         );
+    };
+
+    // Archived scripts are hidden by default, the choice is remembered per browser
+    const SHOW_ARCHIVED_KEY = 'bbb-userscript-manager-show-archived';
+
+    const createArchivedToggle = (table) => {
+        const archivedRows = [...table.querySelectorAll('tbody tr')]
+            .filter(row => row.querySelector('img[alt="Archived"]'));
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'form-check mb-3';
+        wrapper.innerHTML = `
+            <input type="checkbox" class="form-check-input" id="show-archived">
+            <label class="form-check-label" for="show-archived"></label>
+        `;
+        wrapper.querySelector('label').textContent = `Archivierte Skripte anzeigen (${archivedRows.length})`;
+
+        const checkbox = wrapper.querySelector('input');
+        const apply = () => archivedRows.forEach(row => { row.hidden = !checkbox.checked; });
+
+        try {
+            checkbox.checked = localStorage.getItem(SHOW_ARCHIVED_KEY) === 'true';
+        } catch (e) {
+            // Storage unavailable, keep the default
+        }
+        checkbox.addEventListener('change', () => {
+            apply();
+            try {
+                localStorage.setItem(SHOW_ARCHIVED_KEY, String(checkbox.checked));
+            } catch (e) {
+                // Storage unavailable, the choice only lasts for this page
+            }
+        });
+        apply();
+
+        return wrapper;
     };
 
     const addTable = () => {
@@ -117,8 +153,7 @@
                     row.appendChild(status);
                 });
                 
-                content.innerHTML = '';
-                content.appendChild(table);
+                content.replaceChildren(createArchivedToggle(table), table);
                 
                 Logger.success('manager', 'Table loaded successfully');
                 
