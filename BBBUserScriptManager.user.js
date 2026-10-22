@@ -2,9 +2,10 @@
 // @name        BBB UserScript Manager
 // @namespace   Violentmonkey Scripts
 // @match       https://moodle.bbbaden.ch/*
+// @match       https://lms.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       GM_info
-// @version     0.7.0
+// @version     0.8.0
 // @author      PianoNic
 // @description BBB UserScript Manager - Enhanced with better script detection
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -18,24 +19,13 @@
 (function() {
     'use strict';
 
-    Logger.info('manager', 'v0.7.0 - Enhanced');
+    if (!UserscriptBridge.runOnce()) return;
+    Logger.info('manager', 'v0.8.0');
 
-    const connection = new Script();
-    Logger.success('manager', 'Bridge connection initialized');
-    
-    PageBuilder.prepare404Page = (title, text) => {
-        document.title = title;
-        const h = document.querySelector('#page-header h1.h2');
-        if (h) h.innerHTML = text;
-        const p = document.getElementById('page-content');
-        if (p) {
-            p.innerHTML = '';
-            const c = document.createElement('div');
-            c.className = 'custom-content';
-            c.style.padding = '20px';
-            p.appendChild(c);
-        }
-    };
+    const CONFIG_PATH = '/userscript/config';
+    const EXTENSIONS_PATH = UserscriptBridge.EXTENSIONS_PATH;
+
+    UserscriptBridge.registerScript();
 
     const normalizeScriptName = (name) => {
         if (!name) return '';
@@ -225,36 +215,34 @@
         });
     };
 
-    const url = window.location.href;
+    const path = window.location.pathname;
     
-    if (url === 'https://moodle.bbbaden.ch/userscript/config') {
+    if (path === CONFIG_PATH) {
         PageBuilder.prepare404Page('Userscript Config', 'Userscript Config');
     }
     
-    if (url === 'https://moodle.bbbaden.ch/userscript/extensions') {
+    if (path === EXTENSIONS_PATH) {
         PageBuilder.prepare404Page('Manage Userscripts', 'Manage Userscripts');
-        setTimeout(addTable, 100);
+        addTable();
     }
 
-    // Add navigation links
-    setTimeout(() => {
-        const ul = document.querySelector('.no-overflow ul');
-        if (ul && !ul.querySelector('a[href*="userscript"]')) {
-            ul.innerHTML += '<li><a href="https://moodle.bbbaden.ch/userscript/extensions">UserScript Manager</a></li>';
-        }
-        
-        const dd = document.getElementById('carousel-item-main');
-        if (dd && !dd.querySelector('a[href*="userscript"]')) {
-            dd.innerHTML += `
-                <div class="dropdown-divider"></div>
-                <a href="https://moodle.bbbaden.ch/userscript/config" class="dropdown-item">
-                    <i class="fa fa-cog"></i> Config
-                </a>
-                <a href="https://moodle.bbbaden.ch/userscript/extensions" class="dropdown-item">
-                    <i class="fa fa-puzzle-piece"></i> Extensions
-                </a>
-            `;
-        }
-    }, 500);
+    // Add navigation links (relative, so they stay on the current Moodle instance)
+    const ul = document.querySelector('.no-overflow ul');
+    if (ul && !ul.querySelector('a[href*="userscript"]')) {
+        ul.insertAdjacentHTML('beforeend', `<li><a href="${EXTENSIONS_PATH}">UserScript Manager</a></li>`);
+    }
+    
+    const dd = document.getElementById('carousel-item-main');
+    if (dd && !dd.querySelector('a[href*="userscript"]')) {
+        dd.insertAdjacentHTML('beforeend', `
+            <div class="dropdown-divider"></div>
+            <a href="${CONFIG_PATH}" class="dropdown-item">
+                <i class="fa fa-cog"></i> Config
+            </a>
+            <a href="${EXTENSIONS_PATH}" class="dropdown-item">
+                <i class="fa fa-puzzle-piece"></i> Extensions
+            </a>
+        `);
+    }
 
 })();
