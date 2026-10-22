@@ -5,7 +5,7 @@
 // @match       https://lms.bbbaden.ch/*
 // @icon        https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/blob/main/icons/icon.png?raw=true
 // @grant       GM_info
-// @version     0.8.0
+// @version     0.8.1
 // @author      PianoNic
 // @description BBB UserScript Manager - Enhanced with better script detection
 // @downloadURL https://github.com/BBBaden-Moodle-userscripts/BBBUserScriptManager/raw/main/BBBUserScriptManager.user.js
@@ -20,7 +20,7 @@
     'use strict';
 
     if (!UserscriptBridge.runOnce()) return;
-    Logger.info('manager', 'v0.8.0');
+    Logger.info('manager', 'v0.8.1');
 
     const CONFIG_PATH = '/userscript/config';
     const EXTENSIONS_PATH = UserscriptBridge.EXTENSIONS_PATH;
@@ -84,6 +84,10 @@
                 table.style.width = '100%';
                 table.classList.add('table', 'table-striped', 'table-hover');
                 
+                // Icon-only install column
+                const installTh = table.querySelector('thead th:last-child');
+                if (installTh) installTh.classList.add('text-center');
+
                 // Add Status header
                 const th = document.createElement('th');
                 th.textContent = 'Status';
@@ -95,10 +99,10 @@
                 table.querySelectorAll('tbody tr').forEach((row, index) => {
                     const last = row.querySelector('td:last-child a');
                     if (last) {
-                        last.outerHTML = `<a href="${last.href}" target="_blank">
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="fa fa-download"></i> Install
-                            </button>
+                        last.closest('td').classList.add('text-center');
+                        last.outerHTML = `<a href="${last.href}" target="_blank" class="btn btn-sm btn-outline-primary install-btn"
+                                             title="Installieren" aria-label="Installieren">
+                            <i class="fa fa-download" aria-hidden="true"></i>
                         </a>`;
                     }
                     
@@ -176,10 +180,11 @@
                     );
                     
                     if (matchedScript) {
+                        markInstalled(row);
                         const cell = row.querySelector('.status-cell');
                         if (cell) {
                             cell.innerHTML = `
-                                <span class="badge badge-success" title="${matchedScript.name}">
+                                <span class="badge badge-success bg-success" title="${matchedScript.name}">
                                     <i class="fa fa-check"></i> v${matchedScript.version}
                                 </span>
                             `;
@@ -200,14 +205,24 @@
             });
     };
 
+    // Installed scripts get a reinstall button instead of install, which also pulls the latest version
+    const markInstalled = (row) => {
+        const button = row.querySelector('.install-btn');
+        if (!button) return;
+        button.classList.replace('btn-outline-primary', 'btn-outline-secondary');
+        button.title = 'Neu installieren / aktualisieren';
+        button.setAttribute('aria-label', button.title);
+        button.querySelector('i').className = 'fa fa-refresh';
+    };
+
     const updateAllStatusCells = (status, message = null) => {
         document.querySelectorAll('.status-cell').forEach(cell => {
             switch (status) {
                 case 'not-installed':
-                    cell.innerHTML = '<span class="badge badge-secondary">Not Installed</span>';
+                    cell.innerHTML = '<span class="badge badge-secondary bg-secondary">Not Installed</span>';
                     break;
                 case 'error':
-                    cell.innerHTML = `<span class="badge badge-danger">${message || 'Error'}</span>`;
+                    cell.innerHTML = `<span class="badge badge-danger bg-danger">${message || 'Error'}</span>`;
                     break;
                 default:
                     cell.innerHTML = '<span class="badge badge-secondary">Unknown</span>';
